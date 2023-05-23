@@ -1,7 +1,7 @@
 ﻿#include<Windows.h>
 #include<iostream>
 #include <stdlib.h>
-
+#include <string>
 using namespace std;
 
 bool KEY[256];
@@ -22,39 +22,11 @@ void GetKEY()
 
 void main() {
 	char b = 219;
-	char p = 219;
 	char b = 8;
-	int d = 0;
-	string outPut = "";
-	while (true) {
-		GetKEY();
-		if (KEY[39])
-		{
-			outPut += " ";
-			d++;
-		}
-		else if (KEY[37])
-		{
-			if (size(outPut) > 0) {
-				outPut += b;
-				d--;
-			}
-		}
-		else if (KEY[40])
-		{
-			outPut += "\n";
-			for (int i = 0; i < d; i++) {
-				outPut += " ";
-			}
-
-		}
-		else if (KEY[38])
-		{
-			outPut += "";
-			outPut += "\033[A";
-		}
-		cout << "\033[2J\033[1;1H";
-		cout << outPut << p << endl;
-		Sleep(50);
+	const int x = 10;
+	const int y = 10;
+	string map[x + 1][y + 1];
+	for (int i = 0; i < y + 1; i++) {
+		cout << "-";
 	}
 }

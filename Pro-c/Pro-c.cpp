@@ -61,6 +61,6 @@ void main() {
 		}
 		cout << "\033[2J\033[1;1H";
 		cout << outPut << p << endl;
-		Sleep(200);
+		Sleep(50);
 	}
 }

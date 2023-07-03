@@ -92,4 +92,10 @@ void sketch() {
 
 void main() {
 	srand((unsigned)time(NULL));
+	start();
+	while (!isdead) {
+		sketch();
+		control();
+		game();
+	}
 }

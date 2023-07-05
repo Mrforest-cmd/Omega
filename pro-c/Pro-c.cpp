@@ -25,7 +25,7 @@ void start() {
 }
 
 void game() {
-	int temp_save_x=pos_hvost_x[0], temp_save_y = pos_hvost_y[0], temp1,temp2;
+	int temp_save_x = pos_hvost_x[0], temp_save_y = pos_hvost_y[0], temp1, temp2;
 	pos_hvost_x[0] = pos_x, pos_hvost_y[0] = pos_y;
 	for (int i = 1; i < dlinna_hvostika; i++) {
 		temp1 = pos_hvost_x[i];
@@ -35,6 +35,7 @@ void game() {
 		temp_save_x = temp1;
 		temp_save_y = temp2;
 	}
+
 	switch (directi) {
 	case RIGHT:
 		pos_x++;
@@ -51,6 +52,29 @@ void game() {
 		pos_y++;
 		break;
 
+	}
+
+	if (pos_x > map_width - 2 || pos_y > map_height - 1 || pos_x < 0 || pos_y < 0) {
+		isdead = true;
+		for (int i = 0; i < dlinna_hvostika; i++) {
+			if (pos_hvost_x[i] == pos_x && pos_hvost_y[i] == pos_y) {
+				isdead = true;
+			}
+		}
+	}
+
+	for (int i = 1; i < dlinna_hvostika; i++) {
+		if (pos_x == pos_hvost_x[i] && pos_y == pos_hvost_y[i]) {
+			isdead = true;
+			return;
+		}
+	}
+
+	if (pos_x == pos_fruit_x && pos_y == pos_fruit_y) {
+		dlinna_hvostika++;
+		score++;
+		pos_fruit_x = rand() % map_width;
+		pos_fruit_y = rand() % map_height;
 	}
 }
 
@@ -74,20 +98,6 @@ void controls() {
 			directi = DOWN;
 			break;
 		}
-		if (pos_x > map_width -2 || pos_y > map_height-1 || pos_x < 0 || pos_y < 0) {
-			isdead = true;
-			for (int i = 0; i < dlinna_hvostika; i++) {
-				if (pos_hvost_x[i] == pos_x && pos_hvost_y[i] == pos_y) {
-					isdead = true;
-				}
-			}
-		}
-		if (pos_x == pos_fruit_x && pos_y == pos_fruit_y) {
-			dlinna_hvostika++;
-			score++;
-			pos_fruit_x = rand() % map_width;
-			pos_fruit_y = rand() % map_height;
-		}
 	}
 }
 
@@ -100,7 +110,7 @@ void sketchup() {
 
 	for (int i = 0; i < map_height; i++) {
 		for (int w = 0; w < map_width; w++) {
-			if (w == 0 || w == map_width - 1 ) {
+			if (w == 0 || w == map_width - 1) {
 				cout << "#";
 			}
 			if (i == pos_y && w == pos_x) {
@@ -116,14 +126,14 @@ void sketchup() {
 						cout << "0";
 						nospace = true;
 					}
-					
+
 				}
 				if (!nospace) {
 					cout << " ";
 				}
-				
+
 			}
-			
+
 		}
 		cout << endl;
 	}

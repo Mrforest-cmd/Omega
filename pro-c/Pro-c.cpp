@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <Windows.h>
 
 using namespace std;
 
@@ -7,16 +8,20 @@ bool isdead;
 int pos_x, pos_y, score, pos_fruit_x, pos_fruit_y;
 const int map_width = 20;
 const int map_height = 20;
+int pos_hvost_x[50], pos_hvost_y[50], dlinna_hvostika;
 
-enum direction {RIGHT,LEFT,UP,DOWN,STOP=1};
+
+enum direction { RIGHT, LEFT, UP, DOWN, STOP = 1 };
 direction directi;
 
 void start() {
+	score = 0;
 	isdead = false;
 	directi = STOP;
-	pos_x = map_width / 2 - 1;
-	pos_y = map_height / 2 - 1;
+	pos_x = map_width / 2;
+	pos_y = map_height / 2;
 	pos_fruit_x = rand() % map_width;
+	pos_fruit_y = rand() % map_height;
 }
 
 void game() {
@@ -38,25 +43,34 @@ void game() {
 
 	}
 }
-	
+
 void control() {
 	if (_kbhit) {
 		switch (_getch()) {
 		case 'a':
+			cout << 'a' << endl;
 			directi = LEFT;
 			break;
 		case 'd':
+			cout << 'd' << endl;
 			directi = RIGHT;
 			break;
 		case 'w':
+			cout << 'w' << endl;
 			directi = UP;
 			break;
 		case 's':
+			cout << 's' << endl;
 			directi = DOWN;
 			break;
 		}
-		if (pos_x > map_width || pos_y > map_height || pos_x < 0 || pos_y < 0) {
+		if (pos_x > map_width -2 || pos_y > map_height-1 || pos_x < 0 || pos_y < 0) {
 			isdead = true;
+		}
+		if (pos_x == pos_fruit_x && pos_y == pos_fruit_y) {
+			score++;
+			pos_fruit_x = rand() % map_width;
+			pos_fruit_y = rand() % map_height;
 		}
 	}
 }
@@ -64,36 +78,42 @@ void control() {
 void sketch() {
 	system("cls");
 	for (int i = 0; i < map_width + 1; i++) {
-		cout << "#";	}
+		cout << "#";
+	}
 	cout << endl;
 
 	for (int i = 0; i < map_height; i++) {
 		for (int w = 0; w < map_width; w++) {
-			if (w == map_width - 1 || w == 0) {
+			if (w == 0 || w == map_width - 1 ) {
 				cout << "#";
 			}
-			if (i == pos_y && w == pos_y) {
-				cout << "s";
+			if (i == pos_y && w == pos_x) {
+				cout << "S";
 			}
 			else if (w == pos_fruit_x && i == pos_fruit_y) {
 				cout << "*";
 			}
-			else cout << " ";
+			else 
+				cout << " ";
 		}
+		cout << endl;
 	}
 
 	for (int i = 0; i < map_width + 1; i++) {
 		cout << "#";
 	}
 	cout << endl;
+	cout << "Score: " << score;
 }
 
 
-
-void main() {
+int main() {
 	srand((unsigned)time(NULL));
 	start();
-	while (!isdead) {
+	while (1) {
+		if (isdead) {
+			break;
+		}
 		sketch();
 		control();
 		game();

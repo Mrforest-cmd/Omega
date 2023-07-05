@@ -25,6 +25,16 @@ void start() {
 }
 
 void game() {
+	int temp_save_x=pos_hvost_x[0], temp_save_y = pos_hvost_y[0], temp1,temp2;
+	pos_hvost_x[0] = pos_x, pos_hvost_y[0] = pos_y;
+	for (int i = 1; i < dlinna_hvostika; i++) {
+		temp1 = pos_hvost_x[i];
+		temp2 = pos_hvost_y[i];
+		pos_hvost_x[i] = temp_save_x;
+		pos_hvost_y[i] = temp_save_y;
+		temp_save_x = temp1;
+		temp_save_y = temp2;
+	}
 	switch (directi) {
 	case RIGHT:
 		pos_x++;
@@ -44,7 +54,7 @@ void game() {
 	}
 }
 
-void control() {
+void controls() {
 	if (_kbhit) {
 		switch (_getch()) {
 		case 'a':
@@ -66,8 +76,14 @@ void control() {
 		}
 		if (pos_x > map_width -2 || pos_y > map_height-1 || pos_x < 0 || pos_y < 0) {
 			isdead = true;
+			for (int i = 0; i < dlinna_hvostika; i++) {
+				if (pos_hvost_x[i] == pos_x && pos_hvost_y[i] == pos_y) {
+					isdead = true;
+				}
+			}
 		}
 		if (pos_x == pos_fruit_x && pos_y == pos_fruit_y) {
+			dlinna_hvostika++;
 			score++;
 			pos_fruit_x = rand() % map_width;
 			pos_fruit_y = rand() % map_height;
@@ -75,7 +91,7 @@ void control() {
 	}
 }
 
-void sketch() {
+void sketchup() {
 	system("cls");
 	for (int i = 0; i < map_width + 1; i++) {
 		cout << "#";
@@ -88,13 +104,26 @@ void sketch() {
 				cout << "#";
 			}
 			if (i == pos_y && w == pos_x) {
-				cout << "S";
+				cout << "0";
 			}
 			else if (w == pos_fruit_x && i == pos_fruit_y) {
-				cout << "*";
+				cout << "F";
 			}
-			else 
-				cout << " ";
+			else {
+				bool nospace = false;
+				for (int b = 0; b < dlinna_hvostika; b++) {
+					if (pos_hvost_y[b] == i && pos_hvost_x[b] == w) {
+						cout << "0";
+						nospace = true;
+					}
+					
+				}
+				if (!nospace) {
+					cout << " ";
+				}
+				
+			}
+			
 		}
 		cout << endl;
 	}
@@ -110,12 +139,9 @@ void sketch() {
 int main() {
 	srand((unsigned)time(NULL));
 	start();
-	while (1) {
-		if (isdead) {
-			break;
-		}
-		sketch();
-		control();
+	while (!isdead) {
+		sketchup();
+		controls();
 		game();
 	}
 }

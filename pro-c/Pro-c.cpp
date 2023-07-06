@@ -11,13 +11,13 @@ const int map_height = 20;
 int pos_hvost_x[50], pos_hvost_y[50], dlinna_hvostika;
 
 
-enum direction { RIGHT, LEFT, UP, DOWN, STOP = 1 };
+enum direction { RIGHT, LEFT, UP, DOWN };
 direction directi;
-// Установка начальных значений
+// Сетап 
 void start() {
     score = 0;
     isdead = false;
-    directi = STOP;
+    directi = UP;
     pos_x = map_width / 2;
     pos_y = map_height / 2;
     pos_fruit_x = rand() % (map_width - 2) + 1;
